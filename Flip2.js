@@ -14,12 +14,12 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
-import Card from "./Card";
 
 export default function Flip2() {
   // 맨처음엔 front 가 true
   const [side, setSide] = useState(true);
-  // const sideRef = useRef(true);
+  // const [cardTransform, setCardTransform] = useState("0");
+  // let cardTransform = "180deg";
 
   // 카드 스타일
   const frontStyle = {
@@ -34,7 +34,33 @@ export default function Flip2() {
   const flipAnimation2 = () => {
     setSide(!side);
     flipAnimation();
+    //반복회전?
+    // for (let i = 0; i < 6; i++) {
+    //   console.log("rotate");
+    //   setSide(!side);
+    //   flipAnimation();
+    // }
   };
+  // setInterval(flipAnimation2, 1000);
+
+  // 반복회전 !  근데 setSide가 안되네?
+  // 두번누르면 setSide가 됨
+  let round = 6;
+  function flipAnimation3() {
+    if (round < 1) {
+      return console.log("The loopo is over!");
+    } else {
+      setSide(!side);
+      // console.log("side");
+      flipAnimation();
+      round--;
+      setTimeout(() => flipAnimation3(), 400);
+    }
+  }
+
+  if (rotateYAnimatedStyle.transform[0].rotateY) {
+    // console.log(rotateYAnimatedStyle);
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -45,12 +71,18 @@ export default function Flip2() {
             side ? styles.frontStyle : styles.backStyle,
           ]}
         >
-          <Text style={side ? styles.frontText : styles.backText}>
+          <Text
+            style={
+              side
+                ? [styles.frontText, { transform: [{ rotateY: "180deg" }] }]
+                : styles.backText
+            }
+          >
             {side ? "YES" : "NO"}
           </Text>
         </Animated.View>
 
-        <TouchableOpacity style={styles.buttonStyle} onPress={flipAnimation2}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={flipAnimation3}>
           <Text style={styles.buttonTextStyle}>
             Click Here To Flip The Image
           </Text>
@@ -68,6 +100,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonStyle: {
+    position: "absolute",
+    bottom: 10,
     fontSize: 16,
     color: "white",
     backgroundColor: "green",
@@ -83,8 +117,8 @@ const styles = StyleSheet.create({
 
   frontText: {
     fontSize: 100,
-    color: "#fff",
-    transform: [{ rotateY: "180deg" }],
+    color: "#000",
+    // transform: [{ rotateY: "180deg" }],
   },
   backText: {
     fontSize: 100,
@@ -92,16 +126,18 @@ const styles = StyleSheet.create({
   },
 
   frontStyle: {
-    width: 300,
-    height: 500,
-    backgroundColor: "red",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
   },
   backStyle: {
-    width: 300,
-    height: 500,
+    // width: 300,
+    // height: 500,
+    width: "100%",
+    height: "100%",
     backgroundColor: "#000",
     justifyContent: "center",
     alignItems: "center",
