@@ -6,16 +6,17 @@
 }
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import GestureFlipView from "react-native-gesture-flip-card";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Flip2 from "./Flip2";
 
 export default function App() {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <Flip2 />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StatusBar barStyle="dark-content" />
+        <Flip2 />
+      </GestureHandlerRootView>
     </>
   );
 }

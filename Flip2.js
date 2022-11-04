@@ -4,6 +4,7 @@
 // import React in our code
 import React, { useState, useRef } from "react";
 import { flipAnimation, rotateYAnimatedStyle } from "./Animation";
+// import Swipeable from "react-native-gesture-handler/Swipeable";
 
 // import all the components we are going to use
 import {
@@ -26,12 +27,22 @@ export default function Flip2() {
   // 오직 repeat 아이콘 conditional 렌더에 사용하기 위한 state
   const [flippingState, setFlippingState] = useState(false);
 
+  // 랜덤 숫자 만들기
+  function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
+  //   ​
+  //   console. log(getRandomInt(3));
+  //   // expected output: 0, 1 or 2.
+
   // a = setSide에 사용하기 위한 variable
   let a = true;
-  let round = 6;
 
   // 반복회전 !
   function flipAnimation3() {
+    // let round = 6;
+    let round = getRandomInt(6);
+    console.log(round);
     if (flipping) return;
 
     const flip = () => {
@@ -59,7 +70,7 @@ export default function Flip2() {
           <Feather
             name="repeat"
             size={29}
-            color="black"
+            color={side ? "black" : "white"}
             style={styles.icon}
             onPress={flipAnimation3}
           />
