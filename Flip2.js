@@ -14,57 +14,56 @@ import {
   TouchableOpacity,
   Animated,
 } from "react-native";
+import { Feather } from "@expo/vector-icons";
+
+// flipAnimation3펑션에서 반복해서 클릭해도 이미 돌아가고 있는게 다 끝나면 돌아가게 하도록
+// flipping이라는 플래그 사용
+let flipping = false;
 
 export default function Flip2() {
   // 맨처음엔 front 가 true
   const [side, setSide] = useState(true);
-  // const [cardTransform, setCardTransform] = useState("0");
-  // let cardTransform = "180deg";
+  // 오직 repeat 아이콘 conditional 렌더에 사용하기 위한 state
+  const [flippingState, setFlippingState] = useState(false);
 
-  // 카드 스타일
-  const frontStyle = {
-    width: "300",
-    height: "500",
-    backgroundColor: "#000",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "20",
-  };
-
-  const flipAnimation2 = () => {
-    setSide(!side);
-    flipAnimation();
-    //반복회전?
-    // for (let i = 0; i < 6; i++) {
-    //   console.log("rotate");
-    //   setSide(!side);
-    //   flipAnimation();
-    // }
-  };
-  // setInterval(flipAnimation2, 1000);
-
-  // 반복회전 !  근데 setSide가 안되네?
-  // 두번누르면 setSide가 됨
+  // a = setSide에 사용하기 위한 variable
+  let a = true;
   let round = 6;
-  function flipAnimation3() {
-    if (round < 1) {
-      return console.log("The loopo is over!");
-    } else {
-      setSide(!side);
-      // console.log("side");
-      flipAnimation();
-      round--;
-      setTimeout(() => flipAnimation3(), 400);
-    }
-  }
 
-  if (rotateYAnimatedStyle.transform[0].rotateY) {
-    // console.log(rotateYAnimatedStyle);
+  // 반복회전 !
+  function flipAnimation3() {
+    if (flipping) return;
+
+    const flip = () => {
+      if (round < 1) {
+        flipping = false;
+        setFlippingState(flipping);
+        return console.log("The loopo is over!");
+      } else {
+        flipping = true;
+        setFlippingState(flipping);
+        a = !a;
+        setSide(a);
+        flipAnimation();
+        round--;
+        setTimeout(() => flip(), 400);
+      }
+    };
+    flip();
   }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
+        {!flippingState && (
+          <Feather
+            name="repeat"
+            size={29}
+            color="black"
+            style={styles.icon}
+            onPress={flipAnimation3}
+          />
+        )}
         <Animated.View
           style={[
             rotateYAnimatedStyle,
@@ -81,12 +80,6 @@ export default function Flip2() {
             {side ? "YES" : "NO"}
           </Text>
         </Animated.View>
-
-        <TouchableOpacity style={styles.buttonStyle} onPress={flipAnimation3}>
-          <Text style={styles.buttonTextStyle}>
-            Click Here To Flip The Image
-          </Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -98,6 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "red",
   },
   buttonStyle: {
     position: "absolute",
@@ -142,5 +136,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
+  },
+  icon: {
+    position: "absolute",
+    top: 50,
+    right: 30,
+    zIndex: 10,
   },
 });
