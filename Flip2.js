@@ -4,7 +4,10 @@
 // import React in our code
 import React, { useState, useRef } from "react";
 import { flipAnimation, rotateYAnimatedStyle } from "./Animation";
-// import Swipeable from "react-native-gesture-handler/Swipeable";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import GestureRecognizer, {
+  swipeDirections,
+} from "react-native-swipe-gestures";
 
 // import all the components we are going to use
 import {
@@ -16,10 +19,14 @@ import {
   Animated,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
-// flipAnimation3펑션에서 반복해서 클릭해도 이미 돌아가고 있는게 다 끝나면 돌아가게 하도록
+// flipCard펑션에서 반복해서 클릭해도 이미 돌아가고 있는게 다 끝나면 돌아가게 하도록
 // flipping이라는 플래그 사용
 let flipping = false;
+
+// a = setSide에 사용하기 위한 variable
+let a = true;
 
 export default function Flip2() {
   // 맨처음엔 front 가 true
@@ -29,18 +36,23 @@ export default function Flip2() {
 
   // 랜덤 숫자 만들기
   function getRandomInt(max) {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * max) + 1;
   }
-  //   ​
-  //   console. log(getRandomInt(3));
-  //   // expected output: 0, 1 or 2.
 
-  // a = setSide에 사용하기 위한 variable
-  let a = true;
+  const onSwipeRight = () => {
+    // 돌아가는 중이면 return
+    if (flipping) return;
+    flipCard();
+  };
+  const onSwipeLeft = () => {
+    if (flipping) return;
+    flipCard();
+  };
 
   // 반복회전 !
-  function flipAnimation3() {
+  function flipCard() {
     // let round = 6;
+    // getRandomInt에 인수로 주는 숫자를 최대값으로 해서 랜덤숫자가 나옴
     let round = getRandomInt(6);
     console.log(round);
     if (flipping) return;
@@ -49,12 +61,13 @@ export default function Flip2() {
       if (round < 1) {
         flipping = false;
         setFlippingState(flipping);
-        return console.log("The loopo is over!");
+        console.log(flipping);
       } else {
         flipping = true;
         setFlippingState(flipping);
         a = !a;
         setSide(a);
+        console.log(flipping);
         flipAnimation();
         round--;
         setTimeout(() => flip(), 400);
@@ -65,6 +78,7 @@ export default function Flip2() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar style={side ? "dark" : "light"} />
       <View style={styles.container}>
         {!flippingState && (
           <Feather
@@ -72,25 +86,31 @@ export default function Flip2() {
             size={29}
             color={side ? "black" : "white"}
             style={styles.icon}
-            onPress={flipAnimation3}
+            onPress={flipCard}
           />
         )}
-        <Animated.View
-          style={[
-            rotateYAnimatedStyle,
-            side ? styles.frontStyle : styles.backStyle,
-          ]}
+        <GestureRecognizer
+          style={{ width: "100%", height: "100%" }}
+          onSwipeRight={() => onSwipeRight()}
+          onSwipeLeft={() => onSwipeLeft()}
         >
-          <Text
-            style={
-              side
-                ? [styles.frontText, { transform: [{ rotateY: "180deg" }] }]
-                : styles.backText
-            }
+          <Animated.View
+            style={[
+              rotateYAnimatedStyle,
+              side ? styles.frontStyle : styles.backStyle,
+            ]}
           >
-            {side ? "YES" : "NO"}
-          </Text>
-        </Animated.View>
+            <Text
+              style={
+                side
+                  ? [styles.frontText, { transform: [{ rotateY: "180deg" }] }]
+                  : styles.backText
+              }
+            >
+              {side ? "YES" : "NO"}
+            </Text>
+          </Animated.View>
+        </GestureRecognizer>
       </View>
     </SafeAreaView>
   );
