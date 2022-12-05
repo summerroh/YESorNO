@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 
-import Flip2 from "./Flip2";
+import Flip from "./Flip";
 
 export default function App() {
   return (
     <>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <Flip2 />
-      </GestureHandlerRootView>
+      <View style={{ flex: 1 }}>
+        <Flip />
+      </View>
     </>
   );
 }

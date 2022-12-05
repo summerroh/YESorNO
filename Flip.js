@@ -2,22 +2,12 @@
 // https://aboutreact.com/react-native-flip-image-horizontally-using-animation/
 
 // import React in our code
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { flipAnimation, rotateYAnimatedStyle } from "./Animation";
-import Swipeable from "react-native-gesture-handler/Swipeable";
-import GestureRecognizer, {
-  swipeDirections,
-} from "react-native-swipe-gestures";
+import GestureRecognizer from "react-native-swipe-gestures";
 
 // import all the components we are going to use
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  Animated,
-} from "react-native";
+import { SafeAreaView, StyleSheet, View, Text, Animated } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 
@@ -28,7 +18,7 @@ let flipping = false;
 // a = setSide에 사용하기 위한 variable
 let a = true;
 
-export default function Flip2() {
+export default function () {
   // 맨처음엔 front 가 true
   const [side, setSide] = useState(true);
   // 오직 repeat 아이콘 conditional 렌더에 사용하기 위한 state
@@ -51,23 +41,19 @@ export default function Flip2() {
 
   // 반복회전 !
   function flipCard() {
-    // let round = 6;
     // getRandomInt에 인수로 주는 숫자를 최대값으로 해서 랜덤숫자가 나옴
     let round = getRandomInt(6);
-    console.log(round);
     if (flipping) return;
 
     const flip = () => {
       if (round < 1) {
         flipping = false;
         setFlippingState(flipping);
-        console.log(flipping);
       } else {
         flipping = true;
         setFlippingState(flipping);
         a = !a;
         setSide(a);
-        console.log(flipping);
         flipAnimation();
         round--;
         setTimeout(() => flip(), 400);
@@ -78,7 +64,8 @@ export default function Flip2() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar style={side ? "dark" : "light"} />
+      {/* <StatusBar style={side ? "dark" : "light"} /> */}
+      <StatusBar style={"dark"} />
       <View style={styles.container}>
         {!flippingState && (
           <Feather
@@ -90,7 +77,7 @@ export default function Flip2() {
           />
         )}
         <GestureRecognizer
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "90%", height: "90%" }}
           onSwipeRight={() => onSwipeRight()}
           onSwipeLeft={() => onSwipeLeft()}
         >
@@ -122,7 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "red",
+    backgroundColor: "white",
   },
   buttonStyle: {
     position: "absolute",
@@ -143,7 +130,6 @@ const styles = StyleSheet.create({
   frontText: {
     fontSize: 100,
     color: "#000",
-    // transform: [{ rotateY: "180deg" }],
   },
   backText: {
     fontSize: 100,
@@ -156,6 +142,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     justifyContent: "center",
     alignItems: "center",
+    borderColor: "black",
+    borderWidth: 1,
     borderRadius: 20,
   },
   backStyle: {
@@ -170,8 +158,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     position: "absolute",
-    top: 50,
-    right: 30,
+    top: 60,
+    right: 40,
     zIndex: 10,
   },
 });
