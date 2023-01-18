@@ -12,13 +12,15 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/20e36d0a-5637-4988-b417-2940e04dcabe"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.summerroh.yesorno"
     },
     "android": {
       "adaptiveIcon": {
@@ -34,6 +36,9 @@
       "eas": {
         "projectId": "20e36d0a-5637-4988-b417-2940e04dcabe"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
