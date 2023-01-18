@@ -2,9 +2,14 @@
 // https://aboutreact.com/react-native-flip-image-horizontally-using-animation/
 
 // import React in our code
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { flipAnimation, rotateYAnimatedStyle } from "./Animation";
 import GestureRecognizer from "react-native-swipe-gestures";
+import * as SplashScreen from "expo-splash-screen";
+import { useFonts } from "expo-font";
+import { BebasNeue_400Regular } from "@expo-google-fonts/bebas-neue";
+import { Syne_700Bold } from "@expo-google-fonts/syne";
+import { Cormorant_700Bold } from "@expo-google-fonts/cormorant";
 
 // import all the components we are going to use
 import { SafeAreaView, StyleSheet, View, Text, Animated } from "react-native";
@@ -18,15 +23,50 @@ let flipping = false;
 // a = setSide에 사용하기 위한 variable
 let a = true;
 
+// 폰트 로딩 관련 // Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
+
 export default function () {
+  // 폰트 로딩
+  let [fontsLoaded] = useFonts({
+    Syne_700Bold,
+    RubikBubbles: require("./assets/RubikBubbles-Regular.ttf"),
+    BebasNeue_400Regular,
+    Cormorant_700Bold,
+  });
+
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
+
+  // 폰트 로딩 끝
+  let fontList = [
+    "Syne_700Bold",
+    "RubikBubbles",
+    "BebasNeue_400Regular",
+    "Cormorant_700Bold",
+  ];
+  // let fontIndex = 0;
+  // const [font, setFont] = useState("Syne_700Bold");
+  const [fontIndex, setFontIndex] = useState(0);
+
   // 맨처음엔 front 가 true
   const [side, setSide] = useState(true);
   // 오직 repeat 아이콘 conditional 렌더에 사용하기 위한 state
   const [flippingState, setFlippingState] = useState(false);
 
   // 랜덤 숫자 만들기
-  function getRandomInt(max) {
-    return Math.floor(Math.random() * max) + 1;
+  function getRandomInt(max, min) {
+    return Math.floor(Math.random() * max) + min;
   }
 
   const onSwipeRight = () => {
@@ -41,8 +81,9 @@ export default function () {
 
   // 반복회전 !
   function flipCard() {
-    // getRandomInt에 인수로 주는 숫자를 최대값으로 해서 랜덤숫자가 나옴
-    let round = getRandomInt(6);
+    // getRandomInt에 인수로 주는 max숫자를 최대값으로, min숫자를 최소값으로 해서 랜덤숫자가 나옴
+    // 현재 10이 최대값이고 3이 최소값임
+    let round = getRandomInt(8, 3);
     if (flipping) return;
 
     const flip = () => {
@@ -62,8 +103,21 @@ export default function () {
     flip();
   }
 
+  const changeFont = () => {
+    // 폰트 리스트 안에서 돌아가면서 인덱스 설정해줌
+    let fontListLength = fontList.length;
+    if (fontIndex < fontListLength - 1) {
+      setFontIndex(fontIndex + 1);
+    } else {
+      setFontIndex(0);
+    }
+  };
+
+  if (!fontsLoaded) {
+    return null;
+  }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} onLayout={onLayoutRootView}>
       {/* <StatusBar style={side ? "dark" : "light"} /> */}
       <StatusBar style={"dark"} />
       <View style={styles.container}>
@@ -74,6 +128,15 @@ export default function () {
             color={side ? "black" : "white"}
             style={styles.icon}
             onPress={flipCard}
+          />
+        )}
+        {!flippingState && (
+          <Feather
+            name="type"
+            size={29}
+            color={side ? "black" : "white"}
+            style={styles.leftIcon}
+            onPress={changeFont}
           />
         )}
         <GestureRecognizer
@@ -90,8 +153,19 @@ export default function () {
             <Text
               style={
                 side
-                  ? [styles.frontText, { transform: [{ rotateY: "180deg" }] }]
-                  : styles.backText
+                  ? [
+                      {
+                        fontSize: 120,
+                        color: "#000",
+                        fontFamily: fontList[fontIndex],
+                      },
+                      { transform: [{ rotateY: "180deg" }] },
+                    ]
+                  : {
+                      fontSize: 120,
+                      color: "#fff",
+                      fontFamily: fontList[fontIndex],
+                    }
               }
             >
               {side ? "YES" : "NO"}
@@ -127,15 +201,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  frontText: {
-    fontSize: 100,
-    color: "#000",
-  },
-  backText: {
-    fontSize: 100,
-    color: "#fff",
-  },
-
   frontStyle: {
     width: "100%",
     height: "100%",
@@ -160,6 +225,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 60,
     right: 40,
+    zIndex: 10,
+  },
+  leftIcon: {
+    position: "absolute",
+    top: 60,
+    left: 40,
     zIndex: 10,
   },
 });

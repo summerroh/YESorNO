@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "yesorno",
+    "name": "Yes or No",
     "slug": "yesorno",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.summerroh.yesorno"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "20e36d0a-5637-4988-b417-2940e04dcabe"
+      }
     }
   }
 }
