@@ -1,38 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
+import { View } from "react-native";
 
 import Flip from "./Flip";
+import Admob from "./components/Admob";
 
 export default function App() {
   return (
     <>
       <View style={{ flex: 1 }}>
         <Flip />
+        <Admob />
       </View>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  frontStyle: {
-    width: 300,
-    height: 500,
-    backgroundColor: "#000",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 20,
-  },
-  backStyle: {
-    width: 300,
-    height: 500,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 20,
-  },
-});

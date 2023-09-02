@@ -2,7 +2,7 @@
   "expo": {
     "name": "Yes or No",
     "slug": "yesorno",
-    "version": "2.0.0",
+    "version": "4.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -21,7 +21,7 @@
       "bundleIdentifier": "com.summerroh.yesorno"
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -39,5 +39,9 @@
     "runtimeVersion": {
       "policy": "appVersion"
     }
+  },
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-7215370286680655~3948765206",
+    "ios_app_id": "ca-app-pub-7215370286680655~3948765206"
   }
 }
