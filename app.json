@@ -41,7 +41,7 @@
     }
   },
   "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-7215370286680655~3948765206",
-    "ios_app_id": "ca-app-pub-7215370286680655~3948765206"
+    "android_app_id": "",
+    "ios_app_id": ""
   }
 }
